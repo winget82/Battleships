@@ -10,7 +10,7 @@ public class Battleships {
         char[][] sea = new char[10][10];
 
         //print out the sea grid and set it to a variable
-        sea = Sea(sea);
+        Sea(sea);
 
         //deploy the ships
         DeployShips(sea);
@@ -21,7 +21,7 @@ public class Battleships {
         boolean gameOn = true;
         Sea(sea);
 
-        while (gameOn == true){
+        while (gameOn){
             PlayerAttack(sea); //ISSUE HERE
             ComputerAttack(sea);
             Sea(sea);
@@ -70,7 +70,7 @@ public class Battleships {
 
             //update 2D array (sea) here with ship ('1') at (x,y).  This will be done for each ship
             //have a while loop that if (x,y) position != 0 to try another location, ship is already there
-            while (sea[x][y] != 0) { //need to add an OR || statement for values outside of the 10x10 grid
+            while (sea[y][x] != 0) { //need to add an OR || statement for values outside of the 10x10 grid
                 System.out.println("That position is occupied.  Please choose another position.");
                 System.out.print("Enter X coordinate for your " + playerShip + " ship: ");
                 x = input.nextInt();
@@ -78,10 +78,10 @@ public class Battleships {
                 y = input.nextInt();
             }
             //Store position as a value of '1' in the array but later will print out as '@' on the grid
-            sea[x][y] = '1';
+            sea[y][x] = '1';
         }
         System.out.println();
-        input.close();
+        //input.close();
         return sea;
     }
 
@@ -89,11 +89,11 @@ public class Battleships {
         for (int computerShip = 1; computerShip < 6; computerShip++) {
             int x = (int)(Math.random() * 10);
             int y = (int)(Math.random() * 10);
-            while (sea[x][y] != 0){
+            while (sea[y][x] != 0){
                 x = (int)(Math.random() * 10);
                 y = (int)(Math.random() * 10);
             }
-            sea[x][y] = '2';
+            sea[y][x] = '2';
             System.out.println("Computer ship " + computerShip + " is deployed.");
         }
         System.out.println();
@@ -115,15 +115,15 @@ public class Battleships {
             System.out.println("Cannot attack outside of the sea grid.  Please choose a y-value between 0-9.");
             y = attackInput.nextInt();
         }
-        sea[x][y] = '#';
-        attackInput.close();
+        sea[y][x] = '#';
+        //attackInput.close();
         return sea;
     }
 
     public static char[][] ComputerAttack(char sea[][]) {
         int x = (int)(Math.random() * 10);
         int y = (int)(Math.random() * 10);
-        sea[x][y] = '*';
+        sea[y][x] = '*';
         return sea;
     }
 
