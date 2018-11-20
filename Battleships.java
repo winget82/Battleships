@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class Battleships {
+
     public static void main (String[] args) {
         System.out.println("**** Welcome to the Battleships game! ****");
         System.out.println();
@@ -22,9 +23,22 @@ public class Battleships {
         Sea(sea);
 
         while (gameOn){
-            PlayerAttack(sea); //ISSUE HERE
-            ComputerAttack(sea);
+            PlayerAttack(sea);
+            //evaluate for hits
             Sea(sea);
+
+            ComputerAttack(sea);
+            //evaluate for hits
+            Sea(sea);
+
+            gameOn = WinOrLose(sea);
+
+        }
+
+        if (){
+            System.out.println("Hooray!  You've won the battle!");
+        } else {
+            System.out.println("Sorry, you've lost the battle...");
         }
 
     }
@@ -40,7 +54,7 @@ public class Battleships {
                 } else if (sea[row][col] == '1') {
                     System.out.print('@');//print out player ship positions as '@' on the sea grid
                 } else if (sea[row][col] == '2') {
-                    System.out.print('X');//print out computer ship positions as 'X' on the sea grid
+                    System.out.print('%');//print out computer ship positions as 'X' on the sea grid
                 } else {
                     System.out.print(sea[row][col]);
                 }
@@ -103,29 +117,73 @@ public class Battleships {
     public static char[][] PlayerAttack(char sea[][]) {
         Scanner attackInput = new Scanner(System.in);
 
+        System.out.println("YOUR TURN");
+
         System.out.print("Enter X coordinate to attack!");
         int x = attackInput.nextInt();
         while (x > 9 || x < 0) {
             System.out.println("Cannot attack outside of the sea grid.  Please choose a x-value between 0-9.");
             x = attackInput.nextInt();
         }
+
         System.out.print("Enter Y coordinate to attack!");
         int y = attackInput.nextInt();
         while (y > 9 || y < 0) {
             System.out.println("Cannot attack outside of the sea grid.  Please choose a y-value between 0-9.");
             y = attackInput.nextInt();
         }
-        sea[y][x] = '#';
+
+        if (sea[y][x] == '2') {
+            System.out.println("Boom!!!  You sunk the computer's ship!");
+            sea[y][x] = '!';
+        } else if (sea[y][x] == '1') {
+            System.out.println("Oh no, you sunk your own ship!");
+            sea[y][x] = 'X';
+        } else {
+            System.out.println("Sorry, you missed.");
+            sea[y][x] = '-';
+        }
+
         //attackInput.close();
         return sea;
     }
 
     public static char[][] ComputerAttack(char sea[][]) {
+        System.out.println("COMPUTER'S TURN");
+
         int x = (int)(Math.random() * 10);
         int y = (int)(Math.random() * 10);
-        sea[y][x] = '*';
+
+        if (sea[y][x] == '2') {
+            System.out.println("The Computer sunk its own ship!!!");
+            sea[y][x] = '!';
+        } else if (sea[y][x] == '1') {
+            System.out.println("The Computer sunk one of your ships!!!");
+            sea[y][x] = 'X';
+        } else {
+            System.out.println("The Computer missed.");
+            //sea[y][x] = 'O';
+        }
+
         return sea;
     }
 
-    //set up the the end of game
+    public static char[][] WinOrLose(char sea[][]){
+        boolean gameOn;
+        //METHOD TO RETURN REMAINING SHIP COUNT THAT WILL RETURN GAMEON VALUE
+        //ALSO PRINT LINE AT BOTTOM  Your Ships: 5 | Computer Ships: 5
+
+        System.out.println("Your Ships: " + playerShips + " | Computer Ships: " + computerShips);
+
+        if (computerShips == 0 || playerShips == 0) {
+            gameOn = false;
+        } else {
+            gameOn = true;
+        }
+        //will need to modify this because this can't determine who wins, only that game is over
+        //or make another function for that?  Think on it...
+
+        return gameOn;
+    }
+
 }
