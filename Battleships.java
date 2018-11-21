@@ -19,28 +19,23 @@ public class Battleships {
         //print out the updated sea grid
         Sea(sea);
         DeployComputerShips(sea);
-        boolean gameOn = true;
+        char gameOn = '0';
         Sea(sea);
 
-        while (gameOn){
+        while (gameOn == '0'){
             PlayerAttack(sea);
-            //evaluate for hits
             Sea(sea);
-
             ComputerAttack(sea);
-            //evaluate for hits
             Sea(sea);
 
             gameOn = WinOrLose(sea);
-
         }
 
-        if (){
+        if (gameOn == '1'){
             System.out.println("Hooray!  You've won the battle!");
-        } else {
+        } else if (gameOn == '2') {
             System.out.println("Sorry, you've lost the battle...");
         }
-
     }
 
     public static char[][] Sea (char sea[][]) {
@@ -54,7 +49,7 @@ public class Battleships {
                 } else if (sea[row][col] == '1') {
                     System.out.print('@');//print out player ship positions as '@' on the sea grid
                 } else if (sea[row][col] == '2') {
-                    System.out.print('%');//print out computer ship positions as 'X' on the sea grid
+                    System.out.print(" ");//print out computer ship positions as '%' on the sea grid
                 } else {
                     System.out.print(sea[row][col]);
                 }
@@ -62,12 +57,14 @@ public class Battleships {
             System.out.println("|" + row);//prints right side border and row number
         }
         System.out.println("  0123456789  ");//bottom row
+        System.out.println();
         return sea;
     }
 
     public static char[][] DeployShips(char sea[][]) {
         Scanner input = new Scanner(System.in);
 
+        //STILL NEED TO PREVENT THE ENTRY OF NON NUMERIC CHARACTERS
         for (int playerShip = 1; playerShip < 6; playerShip++) {
             System.out.print("Enter X coordinate for your " + playerShip + " ship: ");
             int x = input.nextInt();
@@ -145,6 +142,7 @@ public class Battleships {
         }
 
         //attackInput.close();
+        System.out.println();
         return sea;
     }
 
@@ -164,26 +162,36 @@ public class Battleships {
             System.out.println("The Computer missed.");
             //sea[y][x] = 'O';
         }
-
         return sea;
     }
 
-    public static char[][] WinOrLose(char sea[][]){
-        boolean gameOn;
+    public static char WinOrLose(char sea[][]){
+        char gameOn;
+        int playerShips = 0;
+        int computerShips = 0;
+
         //METHOD TO RETURN REMAINING SHIP COUNT THAT WILL RETURN GAMEON VALUE
-        //ALSO PRINT LINE AT BOTTOM  Your Ships: 5 | Computer Ships: 5
-
-        System.out.println("Your Ships: " + playerShips + " | Computer Ships: " + computerShips);
-
-        if (computerShips == 0 || playerShips == 0) {
-            gameOn = false;
-        } else {
-            gameOn = true;
+        for (int row = 0; row < sea.length; row++) {
+            for (int col = 0; col < sea[row].length; col++) {
+                if (sea[row][col] == '1') {
+                    playerShips++;
+                } else if (sea[row][col] == '2') {
+                    computerShips++;
+                }
+            }
         }
-        //will need to modify this because this can't determine who wins, only that game is over
-        //or make another function for that?  Think on it...
 
+        //ALSO PRINT LINE AT BOTTOM  Your Ships: 5 | Computer Ships: 5
+        System.out.println("Your Ships: " + playerShips + " | Computer Ships: " + computerShips);
+        System.out.println();
+
+        if (computerShips == 0) {
+            gameOn = '1';
+        } else if (playerShips == 0) {
+            gameOn = '2';
+        } else {
+            gameOn = '0';
+        }
         return gameOn;
     }
-
 }
