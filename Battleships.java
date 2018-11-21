@@ -63,8 +63,10 @@ public class Battleships {
 
     public static char[][] DeployShips(char sea[][]) {
         Scanner input = new Scanner(System.in);
-
-        //STILL NEED TO PREVENT THE ENTRY OF NON NUMERIC CHARACTERS
+        //Revisit this code in the future.  The following issue has not been covered in the course
+        //yet and having a difficult time getting it to prevent non-numeric characters
+        //STILL NEED TO PREVENT THE ENTRY OF NON-NUMERIC CHARACTERS TRY SOMETHING LIKE:
+        //while(!x.matches("[0-9]+")) - CAN'T GET THIS TO WORK...
         for (int playerShip = 1; playerShip < 6; playerShip++) {
             System.out.print("Enter X coordinate for your " + playerShip + " ship: ");
             int x = input.nextInt();
